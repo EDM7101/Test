@@ -3,198 +3,150 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Age of Empires Chat</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-bZ6iZYBMISjl1o4eHO3pXdLwPPnhuZHQ9gJMZcqzPeWu7SxETz9gXREdjZk2w8+c" crossorigin="anonymous">
+<title>Super HTML Viewer 9000</title>
 <style>
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #000;
-        color: #ffeb3b; /* neongelbe Schriftfarbe */
-        margin: 0;
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #232323;
+    color: #fff;
+  }
+  .container {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .editor, .preview {
+    padding: 20px;
+    overflow: auto;
+    background-color: #333;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    width: 80%;
+    max-width: 800px;
+  }
+  textarea {
+    width: 100%;
+    height: 200px;
+    resize: none;
+    border: 1px solid #555;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    background-color: #444;
+    color: #fff;
+  }
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+  button {
+    padding: 15px 0;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+  .preview {
+    position: relative;
+    max-width: calc(50% - 40px);
+  }
+  .loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+  }
+  .loading-text {
+    font-size: 24px;
+    font-weight: bold;
+    color: #007bff;
+  }
+
+  @media screen and (max-width: 768px) {
+    .container {
+      flex-direction: column;
+      padding: 0 20px; /* Adjust container padding */
     }
-    #chat-container {
-        flex: 1;
-        display: flex;
-        overflow: hidden;
+    .editor, .preview {
+      max-width: 100%; /* Make editor and preview full width */
     }
-    #user-list-container {
-        position: relative;
-        flex: 0 0 20%;
-        background-color: #111;
-        color: #ffeb3b; /* neongelbe Schriftfarbe */
-        padding: 20px;
-        border-right: 1px solid #333;
+    textarea {
+      height: 150px; /* Adjust textarea height */
     }
-    #user-list {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-    }
-    #user-list h2 {
-        margin-top: 0;
-    }
-    #voice-call-controls {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        display: flex;
-        align-items: center;
-    }
-    #volume-slider {
-        margin-right: 10px;
-        width: 100px;
-    }
-    #mute-button {
-        background-color: #333;
-        border: none;
-        color: #ffeb3b; /* neongelbe Schriftfarbe */
-        padding: 8px;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-    #voice-call-btn {
-        position: absolute;
-        bottom: 20px;
-        left: 20px;
-        background-color: #333;
-        border: none;
-        color: #ffeb3b; /* neongelbe Schriftfarbe */
-        padding: 10px;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-    #chat-window {
-        flex: 1;
-        background-color: #000;
-        overflow-y: auto;
-    }
-    #chat-header {
-        background-color: #000;
-        color: #ffeb3b; /* neongelbe Schriftfarbe */
-        padding: 15px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    #chat-header h2 {
-        margin: 0;
-    }
-    #chat-messages {
-        padding: 20px;
-    }
-    .message {
-        background-color: #222;
-        padding: 10px;
-        border-radius: 5px;
-        margin-bottom: 10px;
-    }
-    .message p {
-        margin: 0;
-    }
-    .message small {
-        color: #888;
-    }
-    #chat-input {
-        background-color: #000;
-        padding: 15px;
-        border-top: 1px solid #333;
-        display: flex;
-        align-items: center;
-    }
-    #chat-input input[type="text"] {
-        flex: 1;
-        padding: 8px;
-        border-radius: 5px;
-        border: 1px solid #333;
-        color: #ffeb3b; /* neongelbe Schriftfarbe */
-        background-color: #222;
-        font-size: 16px;
-    }
-    #chat-input button {
-        padding: 8px 15px;
-        border: none;
-        border-radius: 5px;
-        background-color: #4CAF50;
-        color: #fff;
-        cursor: pointer;
-        font-size: 16px;
-        margin-left: 10px;
-    }
-    #chat-input button:hover {
-        background-color: #45a049;
-    }
-    @media (max-width: 768px) {
-        #chat-container {
-            flex-direction: column;
-        }
-        #user-list-container {
-            flex: 0 0 auto;
-            width: 100%;
-            border-right: none;
-            border-bottom: 1px solid #333;
-        }
-        #user-list {
-            padding-top: 20px;
-        }
-        #chat-window {
-            flex: 1;
-            overflow-y: auto;
-            order: -1;
-        }
-        #chat-input {
-            border-top: none;
-            border-top: 1px solid #333;
-        }
-    }
+  }
 </style>
 </head>
 <body>
-<div id="chat-container">
-    <div id="user-list-container">
-        <h2>Users</h2>
-        <ul id="user-list">
-            <!-- User list items will be added dynamically -->
-        </ul>
-        <div id="voice-call-controls">
-            <input type="range" id="volume-slider" min="0" max="100" value="50">
-            <button id="mute-button" onclick="toggleMute()"><i class="fas fa-volume-mute"></i></button>
-        </div>
-        <button id="voice-call-btn" onclick="toggleVoiceCall()"><i class="fas fa-phone"></i> Voice Call</button>
+<div class="container">
+  <div class="editor">
+    <textarea id="htmlInput" rows="10" placeholder="Enter HTML code here..."></textarea>
+    <div class="button-container">
+      <button onclick="clearTextarea()">Clear</button>
+      <button onclick="insertSampleHTML()">Insert Sample HTML</button>
+      <button onclick="pasteFromClipboard()">Paste from Clipboard</button>
     </div>
-    <div id="chat-window">
-        <div id="chat-header">
-            <h2>Age of Empires Chat</h2>
-        </div>
-        <div id="chat-messages"></div>
+    <button onclick="updatePreview()">Preview</button>
+  </div>
+  <div class="preview" id="preview">
+    <div class="loading-overlay" id="loadingOverlay">
+      <span class="loading-text">Loading...</span>
     </div>
+  </div>
 </div>
-<div id="chat-input">
-    <input type="text" id="message-input" placeholder="Type your message..." onkeydown="if(event.key === 'Enter') sendMessage()">
-    <button onclick="sendMessage()">Send</button>
-</div>
-
-<audio id="voiceCallSound" preload="auto">
-    <source src="https://www.soundjay.com/button/beep-07.wav" type="audio/wav">
-</audio>
-<audio id="sendMessageSound" preload="auto">
-    <source src="https://www.soundjay.com/button/beep-09.wav" type="audio/wav">
-</audio>
 
 <script>
-    let username = '';
-    while (!username) {
-        username = prompt("Enter your username:");
-    }
-    const messageInput = document.getElementById('message-input');
-    const messagesDiv = document.getElementById('chat-messages');
-    const userList = document.getElementById('user-list');
-    const voiceCallSound = document.getElementById('voiceCallSound');
-    const sendMessageSound = document.getElementById('sendMessageSound');
+  function updatePreview() {
+    var htmlCode = document.getElementById('htmlInput').value;
+    var previewDiv = document.getElementById('preview');
+    var loadingOverlay = document.getElementById('loadingOverlay');
 
-    function sendMessage() {
-        const message = messageInput.value.trim();
-        if (message !==
+    loadingOverlay.style.display = 'flex'; // Show loading overlay
+
+    setTimeout(function() {
+      previewDiv.innerHTML = htmlCode; // Update preview after some delay
+      loadingOverlay.style.display = 'none'; // Hide loading overlay
+    }, 1500); // Simulate loading delay
+  }
+
+  function clearTextarea() {
+    document.getElementById('htmlInput').value = '';
+  }
+
+  function insertSampleHTML() {
+    var sampleHTML = '<h1>Welcome to HTML Viewer</h1><p>This is a sample HTML code.</p><img src="https://via.placeholder.com/150" alt="Placeholder Image">';
+    document.getElementById('htmlInput').value = sampleHTML;
+  }
+
+  function pasteFromClipboard() {
+    navigator.clipboard.readText()
+      .then(text => {
+        document.getElementById('htmlInput').value += text;
+      })
+      .catch(err => {
+        console.error('Failed to read clipboard contents: ', err);
+      });
+  }
+</script>
+</body>
+</html>
