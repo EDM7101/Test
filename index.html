@@ -61,9 +61,20 @@
   button:hover {
     background-color: #0056b3;
   }
+  .separator {
+    margin: 20px;
+    width: 100%;
+    border-bottom: 1px solid #555;
+  }
   .preview {
-    position: relative;
-    max-width: calc(50% - 40px);
+    padding: 20px;
+    overflow: auto;
+    background-color: #333;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    width: 80%;
+    max-width: 800px;
   }
   .loading-overlay {
     position: absolute;
@@ -103,11 +114,38 @@
     <textarea id="htmlInput" rows="10" placeholder="Enter HTML code here..."></textarea>
     <div class="button-container">
       <button onclick="clearTextarea()">Clear</button>
-      <button onclick="insertSampleHTML()">Insert Sample HTML</button>
       <button onclick="pasteFromClipboard()">Paste from Clipboard</button>
+      <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+      <button onclick="selectAllText()">Select All Text</button>
+      <button onclick="copyToClipboard()">Copy to Clipboard</button>
+      <button onclick="scrollToTop()">Scroll to Top</button>
+      <button onclick="scrollToBottom()">Scroll to Bottom</button>
+      <button onclick="increaseFontSize()">Increase Font Size</button>
+      <button onclick="decreaseFontSize()">Decrease Font Size</button>
+      <button onclick="printPage()">Print Page</button>
+      <button onclick="openInNewTab()">Open in New Tab</button>
+      <button onclick="countWords()">Count Words</button>
+      <button onclick="countCharacters()">Count Characters</button>
+      <button onclick="convertToUppercase()">Convert to Uppercase</button>
+      <button onclick="convertToLowercase()">Convert to Lowercase</button>
+      <button onclick="removeExtraSpaces()">Remove Extra Spaces</button>
+      <button onclick="highlightText()">Highlight Text</button>
+      <button onclick="togglePreview()">Toggle Preview Visibility</button>
+      <button onclick="toggleEditor()">Toggle Editor Visibility</button>
+      <button onclick="toggleToolbar()">Toggle Toolbar Visibility</button>
+      <button onclick="toggleLoadingOverlay()">Toggle Loading Overlay</button>
+      <button onclick="toggleBorder()">Toggle Border</button>
+      <button onclick="toggleShadow()">Toggle Shadow</button>
+      <button onclick="toggleOverflow()">Toggle Overflow</button>
+      <button onclick="toggleMargin()">Toggle Margin</button>
+      <button onclick="togglePadding()">Toggle Padding</button>
+      <button onclick="toggleResize()">Toggle Resize</button>
+      <button onclick="toggleWrap()">Toggle Word Wrap</button>
+      <button onclick="toggleCursor()">Toggle Cursor</button>
+      <button onclick="toggleFullscreen()">Toggle Fullscreen</button>
     </div>
-    <button onclick="updatePreview()">Preview</button>
   </div>
+  <div class="separator"></div>
   <div class="preview" id="preview">
     <div class="loading-overlay" id="loadingOverlay">
       <span class="loading-text">Loading...</span>
@@ -133,11 +171,6 @@
     document.getElementById('htmlInput').value = '';
   }
 
-  function insertSampleHTML() {
-    var sampleHTML = '<h1>Welcome to HTML Viewer</h1><p>This is a sample HTML code.</p><img src="https://via.placeholder.com/150" alt="Placeholder Image">';
-    document.getElementById('htmlInput').value = sampleHTML;
-  }
-
   function pasteFromClipboard() {
     navigator.clipboard.readText()
       .then(text => {
@@ -146,6 +179,153 @@
       .catch(err => {
         console.error('Failed to read clipboard contents: ', err);
       });
+  }
+
+  function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+  }
+
+  function selectAllText() {
+    document.getElementById('htmlInput').select();
+  }
+
+  function copyToClipboard() {
+    document.getElementById('htmlInput').select();
+    document.execCommand('copy');
+  }
+
+  function scrollToTop() {
+    window.scrollTo(0, 0);
+  }
+
+  function scrollToBottom() {
+    window.scrollTo(0, document.body.scrollHeight);
+  }
+
+  function increaseFontSize() {
+    var textarea = document.getElementById('htmlInput');
+    var currentFontSize = parseInt(window.getComputedStyle(textarea).fontSize);
+    textarea.style.fontSize = (currentFontSize + 2) + 'px';
+  }
+
+  function decreaseFontSize() {
+    var textarea = document.getElementById('htmlInput');
+    var currentFontSize = parseInt(window.getComputedStyle(textarea).fontSize);
+    textarea.style.fontSize = (currentFontSize - 2) + 'px';
+  }
+
+  function printPage() {
+    window.print();
+  }
+
+  function openInNewTab() {
+    var htmlCode = document.getElementById('htmlInput').value;
+    var newWindow = window.open();
+    newWindow.document.write(htmlCode);
+  }
+
+  function countWords() {
+    var text = document.getElementById('htmlInput').value;
+    var wordCount = text.trim().split(/\s+/).length;
+    alert('Word count: ' + wordCount);
+  }
+
+  function countCharacters() {
+    var text = document.getElementById('htmlInput').value;
+    var charCount = text.length;
+    alert('Character count: ' + charCount);
+  }
+
+  function convertToUppercase() {
+    var text = document.getElementById('htmlInput').value;
+    document.getElementById('htmlInput').value = text.toUpperCase();
+  }
+
+  function convertToLowercase() {
+    var text = document.getElementById('htmlInput').value;
+    document.getElementById('htmlInput').value = text.toLowerCase();
+  }
+
+  function removeExtraSpaces() {
+    var text = document.getElementById('htmlInput').value;
+    text = text.replace(/\s+/g, ' ').trim();
+    document.getElementById('htmlInput').value = text;
+  }
+
+  function highlightText() {
+    var text = document.getElementById('htmlInput').value;
+    var highlightedText = '<span style="background-color: yellow;">' + text + '</span>';
+    document.getElementById('htmlInput').value = highlightedText;
+  }
+
+  function togglePreview() {
+    var preview = document.getElementById('preview');
+    preview.classList.toggle('hidden');
+  }
+
+  function toggleEditor() {
+    var editor = document.querySelector('.editor');
+    editor.classList.toggle('hidden');
+  }
+
+  function toggleToolbar() {
+    var toolbar = document.querySelector('.button-container');
+    toolbar.classList.toggle('hidden');
+  }
+
+  function toggleLoadingOverlay() {
+    var overlay = document.getElementById('loadingOverlay');
+    overlay.classList.toggle('hidden');
+  }
+
+  function toggleBorder() {
+    var textarea = document.getElementById('htmlInput');
+    textarea.classList.toggle('border');
+  }
+
+  function toggleShadow() {
+    var textarea = document.getElementById('htmlInput');
+    textarea.classList.toggle('shadow');
+  }
+
+  function toggleOverflow() {
+    var textarea = document.getElementById('htmlInput');
+    textarea.classList.toggle('overflow');
+  }
+
+  function toggleMargin() {
+    var textarea = document.getElementById('htmlInput');
+    textarea.classList.toggle('margin');
+  }
+
+  function togglePadding() {
+    var textarea = document.getElementById('htmlInput');
+    textarea.classList.toggle('padding');
+  }
+
+  function toggleResize() {
+    var textarea = document.getElementById('htmlInput');
+    textarea.classList.toggle('resize');
+  }
+
+  function toggleWrap() {
+    var textarea = document.getElementById('htmlInput');
+    textarea.classList.toggle('wrap');
+  }
+
+  function toggleCursor() {
+    var textarea = document.getElementById('htmlInput');
+    textarea.classList.toggle('cursor');
+  }
+
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
   }
 </script>
 </body>
